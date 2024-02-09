@@ -69,8 +69,9 @@
     };
   }
 
-  // Example usage
-  const imageUrl = "https://ae01.alicdn.com/kf/Sa92b012b3e91418a90f7d0ad19fce92bR/Figurines-Pokemon-Pikachu-Raichu-Pichu-en-PVC-de-quatri-me-g-n-ration-8cm-de-hauteur.jpg";
+  // Example usage with query parameter
+  const imageUrlParam = new URLSearchParams(window.location.search).get('imageUrl');
+  const imageUrl = imageUrlParam || "https://ae01.alicdn.com/kf/Sa92b012b3e91418a90f7d0ad19fce92bR/Figurines-Pokemon-Pikachu-Raichu-Pichu-en-PVC-de-quatri-me-g-n-ration-8cm-de-hauteur.jpg";
   getImageData(imageUrl);
 </script>
 
