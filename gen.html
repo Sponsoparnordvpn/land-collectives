@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image to RGB Data</title>
+</head>
+<body>
+
+<script>
+  function resizeImage(img, targetWidth, targetHeight) {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+    return canvas.toDataURL(); // Return the resized image as data URL
+  }
+
+  function getImageData(url) {
+    const img = new Image();
+    img.crossOrigin = "Anonymous"; // Enable cross-origin resource sharing
+    img.src = url;
+
+    img.onload = function() {
+      // Resize the image to 32x32 pixels
+      const resizedImageUrl = resizeImage(img, 32, 32);
+
+      const resizedImg = new Image();
+      resizedImg.crossOrigin = "Anonymous";
+      resizedImg.src = resizedImageUrl;
+
+      resizedImg.onload = function() {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = resizedImg.width;
+        canvas.height = resizedImg.height;
+        ctx.drawImage(resizedImg, 0, 0, resizedImg.width, resizedImg.height);
+
+        try {
+          const imageData = ctx.getImageData(0, 0, resizedImg.width, resizedImg.height).data;
+          const rgbData = [];
+
+          for (let i = 0; i < imageData.length; i += 4) {
+            const pixel = [imageData[i], imageData[i + 1], imageData[i + 2]];
+            rgbData.push(pixel);
+          }
+
+          const formattedData = `[[${rgbData.map(pixel => pixel.join(',')).join('], [')}]]`;
+
+          // Displaying the RGB data on the current page
+          const resultElement = document.createElement('div');
+          resultElement.textContent = formattedData;
+          document.body.appendChild(resultElement);
+
+          console.log("RGB data displayed on the page:", formattedData);
+        } catch (error) {
+          console.error("Error getting image data:", error);
+        }
+      };
+
+      resizedImg.onerror = function() {
+        console.error("Error resizing image");
+      };
+    };
+
+    img.onerror = function() {
+      console.error("Error loading image");
+    };
+  }
+
+  // Example usage
+  const imageUrl = "https://ae01.alicdn.com/kf/Sa92b012b3e91418a90f7d0ad19fce92bR/Figurines-Pokemon-Pikachu-Raichu-Pichu-en-PVC-de-quatri-me-g-n-ration-8cm-de-hauteur.jpg";
+  getImageData(imageUrl);
+</script>
+
+</body>
+</html>
