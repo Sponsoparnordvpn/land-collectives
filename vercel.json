@@ -9,5 +9,6 @@
     { "source": "/privacy_policy", "destination": "/privacypolicy.html" },
     { "source": "/sponsoparnordvpn", "destination": "/aboutme.html" },
     { "source": "/discord", "destination": "https://discord.com/invite/V28pDfYaBW" }
+    { "source": "/pixels", "destination": "/gen.html" }
   ]
 }
